@@ -3,7 +3,7 @@
 apiVersion: elemental.cattle.io/v1beta1
 kind: MachineInventorySelectorTemplate
 metadata:
-  name: {{ $.Release.Name }}-{{ $nodepool.name }}
+  name: {{ $nodepool.name }}
   namespace: fleet-default
 spec:
   template:
