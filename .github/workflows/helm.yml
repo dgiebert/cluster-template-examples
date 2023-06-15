@@ -1,9 +1,8 @@
-name: Docker Image CI
+name: Publish Helm Chart to ghcr.io
 
 on:
   push:
     tags: [ "*" ]
-    branches: ["main", "ci"]
 
 jobs:
 
@@ -23,9 +22,9 @@ jobs:
           version: v3.11.2
 
       - name: Release Helm Chart
-        id: push-helm
+        id: release-chart
         run: |
           sed -i "s/0.0.1/${{ github.ref_name }}/g" charts/Chart.yaml
           helm package charts/
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin -u ${{ github.repository_owner }} ghcr.io/${{ github.repository_owner }}
-          helm push cluster-template-examples*.tgz oci://ghcr.io/${{ github.repository_owner }}
+          helm push cluster-template-examples-${{ github.ref_name }}.tgz oci://ghcr.io/${{ github.repository_owner }}
