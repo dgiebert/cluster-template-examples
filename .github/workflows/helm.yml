@@ -27,5 +27,5 @@ jobs:
         id: push-helm
         run: |
           helm package charts/
-          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin -u ${{ secrets.REGISTRY_USERNAME }} ghcr.io
-          helm push cluster-template-examples*.tgz oci://ghcr.io/${{ secrets.REGISTRY_USERNAME }}
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin -u ${{ env.GITHUB_REPOSITORY_OWNER }} ghcr.io
+          helm push cluster-template-examples*.tgz oci://ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER }}
