@@ -1,0 +1,29 @@
+cluster:
+  name: 
+
+kubernetesVersion: "v1.24.13+k3s1"
+
+cloudprovider: elemental
+
+rke:
+  machineGlobalConfig:
+    secrets-encryption: true
+  machineSelectorConfig:
+  - config:
+      docker: false
+      protect-kernel-defaults: true
+      selinux: true
+
+nodepools:
+- etcd: true
+  controlplane: true
+  worker: true
+
+  name: elemental-server
+  matchExpressions:
+    - key: custom-label
+      operator: In
+      values:
+        - custom-value
+  # matchLabels: 
+  #   custom-label: custom-value

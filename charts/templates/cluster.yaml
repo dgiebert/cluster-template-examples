@@ -36,7 +36,7 @@ spec:
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
       quantity: {{ default 1 $nodepool.quantity }}
-      name: {{ $nodepool.name }}
+      name: {{ $.Release.Name }}-{{ $nodepool.name }}
       machineConfigRef:
         {{- if eq $.Values.cloudprovider "amazonec2" }}
         kind: Amazonec2Config
@@ -52,7 +52,7 @@ spec:
         kind: MachineInventorySelectorTemplate
         apiVersion: elemental.cattle.io/v1beta1
         {{- end}}
-        name: {{ $nodepool.name }}
+        name: {{ $.Release.Name }}-{{ $nodepool.name }}
       paused: {{ default false $nodepool.paused }}
       displayName: {{ default $nodepool.name $nodepool.displayName }}
       {{- if $nodepool.rollingUpdate }}
@@ -76,7 +76,7 @@ spec:
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
       quantity: {{ default 1 $nodepool.quantity }}
-      name: {{ $nodepool.name }}
+      name: {{ $.Release.Name }}-{{ $nodepool.name }}
       machineConfigRef:
         {{- if eq $.Values.cloudprovider "amazonec2" }}
         kind: Amazonec2Config
@@ -92,7 +92,7 @@ spec:
         kind: MachineInventorySelectorTemplate
         apiVersion: elemental.cattle.io/v1beta1
         {{- end}}
-        name: {{ $nodepool.name }}
+        name: {{ $.Release.Name }}-{{ $nodepool.name }}
       paused: {{ default false $nodepool.paused }}
       displayName: {{ default $nodepool.name $nodepool.displayName }}
       {{- if $nodepool.rollingUpdate }}
