@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "ci" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.11.2
+
+      - name: Release Helm Chart
+        id: push-helm
+        run: |
+          helm package charts/
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin -u ${{ secrets.REGISTRY_USERNAME }} ghcr.io
+          helm push cluster-template-examples*.tgz oci://ghcr.io/${{ secrets.REGISTRY_USERNAME }}
