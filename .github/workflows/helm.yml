@@ -2,9 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "ci" ]
-  pull_request:
-    branches: [ "main" ]
+    tags: [ "*" ]
+    branches: ["main", "ci"]
 
 jobs:
 
@@ -26,6 +25,7 @@ jobs:
       - name: Release Helm Chart
         id: push-helm
         run: |
+          sed -i "s/0.0.1/${{ github.ref_name }}/g" charts/Chart.yaml
           helm package charts/
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin -u ${{ github.repository_owner }} ghcr.io/${{ github.repository_owner }}
           helm push cluster-template-examples*.tgz oci://ghcr.io/${{ github.repository_owner }}
